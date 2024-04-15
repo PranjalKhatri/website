@@ -57,6 +57,15 @@ async function saveUser(db, user) {
 
   console.log(`User saved with ID: ${result.insertedId}`);
 }
+async function saveDate(db, date, veneue) {
+  // Get a reference to the users collection
+  const usersCollection = db.collection("DatesDB_" + veneue);
+  console.log("Saved in DatesDB_" + veneue);
+  // Insert the user document into the collection
+  const result = await usersCollection.insertOne(date);
+
+  console.log(`date saved with ID: ${result.insertedId}`);
+}
 // Function to load users from the `users` collection
 async function loadUsers(db) {
   // Get a reference to the `users` collection
@@ -100,13 +109,17 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride("_method"));
+app.use(express.static("public"));
 
 app.get("/", checkAuthenticated, (req, res) => {
   res.render("index.ejs", { name: req.user.name });
 });
+app.get("/HomePage", (req, res) => {
+  res.render("HomePage.ejs");
+});
 /**/
 let dates = [];
-app.get("/bhupenHazarika", checkNotAuthenticated, (req, res) => {
+app.get("/bhupenHazarika", (req, res) => {
   client
     .connect()
     .then(() => {
@@ -114,7 +127,7 @@ app.get("/bhupenHazarika", checkNotAuthenticated, (req, res) => {
       const db = client.db(dbName);
 
       // Load users from the database
-      loadDates(db,"Hazarika")
+      loadDates(db, "Hazarika")
         .then((dates_arr) => {
           dates = dates_arr;
           // Here you can handle the users data
@@ -127,8 +140,156 @@ app.get("/bhupenHazarika", checkNotAuthenticated, (req, res) => {
     .catch((error) => {
       console.error("Error connecting to MongoDB:", error);
     });
-    console.log("pleasee",dates);
-  res.render("Hazarika.ejs", {array: dates});
+  console.log("pleasee", dates);
+  setTimeout(() => {
+    res.render("Hazarika.ejs", { array: dates });
+  }, 2000);
+  // res.render("Hazarika.ejs", { array: dates });
+});
+app.get("/openTheatre", (req, res) => {
+  client
+    .connect()
+    .then(() => {
+      console.log("Connected to MongoDB");
+      const db = client.db(dbName);
+
+      // Load users from the database
+      loadDates(db, "OpenTheatre")
+        .then((dates_arr) => {
+          dates = dates_arr;
+          // Here you can handle the users data
+          console.log("Retrieved dates data:", dates);
+        })
+        .catch((error) => {
+          console.error("Error loading users:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+    });
+  console.log("pleasee", dates);
+  res.render("OpenTheatre.ejs", { array: dates });
+});
+app.get("/bookings", checkAuthenticated, async (req, res) => {
+  names = [
+    "OpenTheatre",
+    "Hazarika",
+    "conferenceCentre",
+    "miniAudi",
+    "yogaRoom",
+  ];
+  let dates = [];
+  for (let i = 0; i < names.length; i++) {
+    n = names[i];
+    // const datesArr = await loadDates(db, name);
+    // dates.push(...datesArr);
+    client
+      .connect()
+      .then(async () => {
+        console.log("Connected to MongoDB");
+        const db = client.db(dbName);
+        // Load users from the database
+        await loadDates(db, n)
+          .then((dates_arr) => {
+            dates.push(...dates_arr);
+            // Here you can handle the users data
+            console.log("Retrieved dates data:", dates);
+          })
+          .catch((error) => {
+            console.error("Error loading users:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error connecting to MongoDB:", error);
+      });
+  }
+  setTimeout(() => {
+    console.log("Waited for a few seconds");
+    console.log("datesssss", dates);
+    res.render("bookings.ejs", { array: dates });
+  }, 2000);
+  // console.log("datesssss", dates);
+  // res.render("bookings.ejs", { array: dates });
+});
+app.get("/yogaRoom", (req, res) => {
+  client
+    .connect()
+    .then(() => {
+      console.log("Connected to MongoDB");
+      const db = client.db(dbName);
+
+      // Load users from the database
+      loadDates(db, "yogaRoom")
+        .then((dates_arr) => {
+          dates = dates_arr;
+          // Here you can handle the users data
+          console.log("Retrieved dates data:", dates);
+        })
+        .catch((error) => {
+          console.error("Error loading users:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+    });
+  console.log("pleasee", dates);
+  setTimeout(() => {
+    res.render("YogaRoom.ejs", { array: dates });
+  }, 1000);
+  // res.render("YogaRoom.ejs", { array: dates });
+});
+app.get("/MiniAudi", (req, res) => {
+  client
+    .connect()
+    .then(() => {
+      console.log("Connected to MongoDB");
+      const db = client.db(dbName);
+
+      // Load users from the database
+      loadDates(db, "miniAudi")
+        .then((dates_arr) => {
+          dates = dates_arr;
+          // Here you can handle the users data
+          console.log("Retrieved dates data:", dates);
+        })
+        .catch((error) => {
+          console.error("Error loading users:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+    });
+  console.log("pleasee", dates);
+  setTimeout(() => {
+    res.render("MiniAudi.ejs", { array: dates });
+  }, 2000);
+  // res.render("MiniAudi.ejs", { array: dates });
+});
+app.get("/ConferenceCentre", (req, res) => {
+  client
+    .connect()
+    .then(() => {
+      console.log("Connected to MongoDB");
+      const db = client.db(dbName);
+
+      // Load users from the database
+      loadDates(db, "conferenceCentre")
+        .then((dates_arr) => {
+          dates = dates_arr;
+          // Here you can handle the users data
+          console.log("Retrieved dates data:", dates);
+        })
+        .catch((error) => {
+          console.error("Error loading users:", error);
+        });
+    })
+    .catch((error) => {
+      console.error("Error connecting to MongoDB:", error);
+    });
+  console.log("pleasee", dates);
+  setTimeout(() => {
+    res.render("ConferenceCentre.ejs", { array: dates });
+  }, 2000);
 });
 /**/
 app.get("/login", checkNotAuthenticated, (req, res) => {
@@ -155,7 +316,52 @@ app.get("/login", checkNotAuthenticated, (req, res) => {
     });
   res.render("login.ejs");
 });
-
+app.get("/announcements", (req, res) => {
+  names = [
+    "OpenTheatre",
+    "Hazarika",
+    "conferenceCentre",
+    "miniAudi",
+    "yogaRoom",
+  ];
+  // let nd = {};
+  let data_ = [];
+  for (let i = 0; i < names.length; i++) {
+    n = names[i];
+    // const datesArr = await loadDates(db, name);
+    // dates.push(...datesArr);
+    client
+      .connect()
+      .then(async () => {
+        console.log("Connected to MongoDB");
+        const db = client.db(dbName);
+        // Load users from the database
+        await loadDates(db, n)
+          .then((dates_arr) => {
+            // data_.push(...dates_arr);
+            
+            data_.push({
+              key:   names[i],
+              value: dates_arr
+          });
+            // Here you can handle the users data
+            console.log("Retrieved dates data:");
+          })
+          .catch((error) => {
+            console.error("Error loading users:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error connecting to MongoDB:", error);
+      });
+  }
+  setTimeout(() => {
+    console.log("Waited for a few seconds");
+    console.log("DATA nd", data_);
+    // res.render("bookings.ejs", { array: dates });
+    res.render("announcements.ejs", { array: data_ });
+  }, 2000);
+});
 app.post(
   "/login",
   checkNotAuthenticated,
@@ -217,6 +423,45 @@ app.post("/register", checkNotAuthenticated, async (req, res) => {
     res.redirect("/register");
   }
 });
+app.post("/bookings", async (req, res) => {
+  let n_date = [];
+  let ven;
+  try {
+    ven = req.body.venue;
+    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    n_date.push({
+      id: Date.now().toString(),
+      // email: req.body.email,
+      // password: hashedPassword,
+      dateTime: req.body.startDateTime,
+    });
+    n_date.push({
+      id: Date.now().toString(),
+      // email: req.body.email,
+      // password: hashedPassword,
+      dateTime: req.body.endDateTime,
+    });
+    console.log("asfafas");
+    console.log(n_date);
+    client
+      .connect()
+      .then(() => {
+        console.log("Connected to MongoDB");
+        const db = client.db(dbName);
+
+        // Save the user to the database
+        saveDate(db, n_date[0], ven);
+        saveDate(db, n_date[1], ven);
+        //  saveUser(db, users[users.length - 1]);
+      })
+      .catch((error) => {
+        console.error("Error connecting to MongoDB:", error);
+      });
+    res.redirect("/login");
+  } catch {
+    res.redirect("/register");
+  }
+});
 
 app.delete("/logout", (req, res) => {
   req.logOut(function (err) {
@@ -233,6 +478,14 @@ function checkAuthenticated(req, res, next) {
   }
 
   res.redirect("/login");
+}
+
+function checkbookings(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect("/bookings");
 }
 
 function checkNotAuthenticated(req, res, next) {

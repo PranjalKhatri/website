@@ -1,17 +1,28 @@
-<h1>Login</h1>
-<% if (messages.error) { %>
-  <%= messages.error %>
-<% } %>
-<form action="/login" method="POST">
-  <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-  </div>
-  <button type="submit">Login</button>
-</form>
-<a href="/register">Register</a>
- 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="/sheet1.css" />
+  </head>
+  <body>
+    <div class = "login-container">
+    <div class="logo">Login</div>
+    <% if (messages.error) { %> <%= messages.error %> <% } %>
+    <form action="/login" method="POST">
+      <!-- <div> -->
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required />
+      <!-- </div> -->
+      <!-- <div> -->
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+      <!-- </div> -->
+      <button type="submit">Login</button>
+    </form>
+    <div class="copyright">© 2024 Indian Institute of Technology Guwahati.For queries contact webmaster @ iitg.ac.in</div>
+    </div>
+    </div>
+    <!-- <a href="/register">Register</a> -->
+  </body>
+</html>

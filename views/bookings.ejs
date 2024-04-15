@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Date-Time Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input[type="datetime-local"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Date-Time Form</h1>
+      <form action="/bookings" method="POST">
+        <div class="form-group">
+            <label for="venue">Venue:</label>
+            <select id="venue" name="venue" required>
+                <option value="Hazarika">Bhupen Hazarika</option>
+                <option value="conferenceCentre">Conference Centre</option>
+                <option value="yogaRoom">Yoga Room</option>
+                <option value="OpenTheatre">Open Theatre</option>
+                <option value="miniAudi">Mini Audi</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+          <label for="startDateTime">Start Date and Time:</label>
+          <input
+            type="datetime-local"
+            id="startDateTime"
+            name="startDateTime"
+            required
+          />
+          <label for="endDateTime">End Date and Time:</label>
+          <input
+            type="datetime-local"
+            id="endDateTime"
+            name="endDateTime"
+            required
+          />
+        </div>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+
+    <div class="container">
+      <h2>Booked Slots</h2>
+      <% for (let i = 0; i < array.length; i+=2) { %>
+      <div class="time-column">
+        <p><li><%= array[i].dateTime %> <b>TO</b> <%= array[i+1].dateTime %></li></p>
+      </div>
+      <% } %>
+    </div>
+  </body>
+</html>
