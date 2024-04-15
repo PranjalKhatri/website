@@ -30,11 +30,11 @@ body {
 .login-container {
 
     background-color: #c6af89;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     /* box-shadow: 10px 10px 10px rgba(230, 227, 227, 0.1); */
-    width: 500px;
-    height: 300px;
+    width: 600px;
+    height: 400px;
     overflow: hidden; 
 }
 
@@ -79,7 +79,16 @@ body {
 .login-container input[type="password"] {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+}
+.login-container input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
